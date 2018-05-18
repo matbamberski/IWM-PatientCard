@@ -10,14 +10,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainViewController">
    <children>
       <Label id="Title" text="Wybierz Pacjenta" />
       <HBox alignment="CENTER_RIGHT" VBox.vgrow="NEVER">
          <children>
             <TextField id="NameFilter" prefHeight="30.0" prefWidth="200.0" />
-            <ImageView id="ClearFilter" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView id="ClearFilter" fitHeight="24.0" fitWidth="24.0" onMouseClicked="#clearFilterClicked" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@Red_X.png" />
                </image>
