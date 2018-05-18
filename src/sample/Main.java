@@ -13,21 +13,33 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    private MainView MainScene;
+    private Stage Window;
+
+    public void BackToMainView(){
+        Window.setScene(MainScene);
+    }
+
+    public void setNewScene(Scene newScene){
+        Window.setScene(newScene);
+    }
+
+    private static Main instance;
+
+    public static Main getInstance(){
+        return instance;
+    }
+
     @Override
-    public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("MainView.fxml"));
-        Scene scene = new Scene(root,600,800);
+    public void start(Stage primaryStage){
+        instance = this;
+        Window = primaryStage;
+
+        MainScene = new MainView(600,800);
 //        primaryStage.setMaximized(true);
-        primaryStage.setTitle("Patient Card");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-
-//        ListView PatientList = (ListView) scene.lookup("#PatientList");
-//        Button ChooseButton = (Button) scene.lookup("#ChooseButton");
-//        Label Title = (Label) scene.lookup("#Title");
-//        TextField NameFilter = (TextField) scene.lookup("#NameFilter");
-//        ImageView ClearFilter = (ImageView) scene.lookup("#ClearFilter");
-
+        Window.setTitle("Patient Card");
+        Window.setScene(MainScene);
+        Window.show();
     }
 
 

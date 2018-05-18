@@ -27,6 +27,6 @@
          </children>
       </HBox>
       <ListView id="PatientList" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-      <Button id="ChooseButton" defaultButton="true" mnemonicParsing="false" text="Wybierz" />
+      <Button id="ChooseButton" defaultButton="true" mnemonicParsing="false" onMouseClicked="#chooseButtonClicked" text="Wybierz" />
    </children>
 </VBox>
