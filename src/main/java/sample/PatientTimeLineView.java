@@ -21,7 +21,7 @@ public class PatientTimeLineView extends Scene {
     public PatientTimeLineView(int width, int height, Object userData){
         super(new Pane(), width, height);
         try {
-            VBox root = FXMLLoader.load(getClass().getResource("PatientTimeLineView.fxml"));
+            VBox root = FXMLLoader.load(getClass().getResource("../../resources/PatientTimeLineView.fxml"));
             setRoot(root);
 
             TimeLine = (ListView) lookup("#TimeLine");
