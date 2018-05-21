@@ -7,8 +7,6 @@ import ca.uhn.fhir.model.dstu2.resource.Bundle.Entry;
 import ca.uhn.fhir.model.dstu2.resource.Patient;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import ca.uhn.fhir.rest.client.api.ServerValidationModeEnum;
-import org.json.*;
-import sun.security.krb5.internal.PAData;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -39,7 +39,21 @@ public class MainView extends Scene {
             ObservableList<String> items = FXCollections.observableArrayList ();
             for (Patient patient : patients) {
                 if(!patient.getName().isEmpty()) {
-                    items.add(patient.getName().get(0).getText());
+                    String name = "";
+                    if( patient.getName().get(0) != null &&
+                        !patient.getName().get(0).getFamily().isEmpty() &&
+                        patient.getName().get(0).getFamily().get(0) != null) {
+                        name += patient.getName().get(0).getFamily().get(0).toString();
+                    }
+                    if( patient.getName().get(0) != null &&
+                        !patient.getName().get(0).getGiven().isEmpty() &&
+                        patient.getName().get(0).getGiven().get(0) != null) {
+                        if (name.length() > 0){
+                            name += " ";
+                        }
+                        name += patient.getName().get(0).getGiven().get(0).toString();
+                    }
+                    items.add(name);
                 }
             }
             PatientList.setItems(items);
