@@ -9,6 +9,10 @@ public class Main extends Application {
     private MainView MainScene;
     private Stage Window;
 
+    public MainView getMainScene() {
+        return MainScene;
+    }
+
     public void BackToMainView(){
         Window.setScene(MainScene);
     }
