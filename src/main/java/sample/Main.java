@@ -8,6 +8,11 @@ public class Main extends Application {
 
     private MainView MainScene;
     private Stage Window;
+    private DataContext dataContext;
+
+    public DataContext getDataContext() {
+        return dataContext;
+    }
 
     public MainView getMainScene() {
         return MainScene;
@@ -29,6 +34,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage){
+        dataContext = new DataContext();
         instance = this;
         Window = primaryStage;
 

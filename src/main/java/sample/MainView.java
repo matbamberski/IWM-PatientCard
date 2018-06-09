@@ -26,10 +26,12 @@ public class MainView extends Scene {
     private Label Title;
     private TextField NameFilter;
     private ImageView ClearFilter;
-    private DataContext dataContext;
+
 
     private List<Patient> allPatients;
     private List<Patient> currentPatients;
+
+
 
     public void ChoosePatient(){
         int index = PatientList.getSelectionModel().getSelectedIndex() >= 0 ? PatientList.getSelectionModel().getSelectedIndex() : 0;
@@ -107,8 +109,8 @@ public class MainView extends Scene {
                 }
             });
 
-            dataContext = new DataContext();
-            allPatients = dataContext.GetPatients();
+
+            allPatients = Main.getInstance().getDataContext().GetPatients();
             ApplyPatientsToList(allPatients);
         }
         catch (java.io.IOException exception){

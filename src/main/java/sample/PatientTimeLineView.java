@@ -1,5 +1,7 @@
 package sample;
 
+import ca.uhn.fhir.model.dstu2.resource.MedicationStatement;
+import ca.uhn.fhir.model.dstu2.resource.Observation;
 import ca.uhn.fhir.model.dstu2.resource.Patient;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,6 +13,7 @@ import javafx.scene.layout.VBox;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 public class PatientTimeLineView extends Scene {
     private ListView TimeLine;
@@ -53,6 +56,9 @@ public class PatientTimeLineView extends Scene {
                 DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
                 BirthDate.setText(df.format(patientData.getBirthDate()));
             }
+
+            List<Observation> observations = Main.getInstance().getDataContext().GetPatientObservations(patientData);
+            List<MedicationStatement> medicationStatements = Main.getInstance().getDataContext().GetPatientMedicationStatement(patientData);
 
         }
         catch (java.io.IOException exception){
