@@ -8,7 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import org.hl7.fhir.dstu3.model.MedicationStatement;
+import org.hl7.fhir.dstu3.model.MedicationRequest;
 import org.hl7.fhir.dstu3.model.Observation;
 import org.hl7.fhir.dstu3.model.Patient;
 
@@ -58,7 +58,7 @@ public class PatientTimeLineView extends Scene {
             }
 
             List<Observation> observations = Main.getInstance().getDataContext().GetPatientObservations(patientData);
-            List<MedicationStatement> medicationStatements = Main.getInstance().getDataContext().GetPatientMedicationStatement(patientData);
+            List<MedicationRequest> medicationStatements = Main.getInstance().getDataContext().GetPatientMedicationStatement(patientData);
 
         }
         catch (java.io.IOException exception){

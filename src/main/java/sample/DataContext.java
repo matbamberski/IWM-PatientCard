@@ -55,12 +55,12 @@ public class DataContext {
         return resultsList;
     }
 
-    public List<MedicationStatement> GetPatientMedicationStatement(Patient patient){
+    public List<MedicationRequest> GetPatientMedicationStatement(Patient patient){
         Set<String> resourcesAlreadyAdded = new HashSet<String>();
 
         Bundle results = client.search()
-                .forResource(MedicationStatement.class)
-                .where(MedicationStatement.PATIENT.hasId(patient.getId()))
+                .forResource(MedicationRequest.class)
+                .where(MedicationRequest.PATIENT.hasId(patient.getId()))
                 .returnBundle(Bundle.class)
                 .execute();
 
@@ -72,13 +72,13 @@ public class DataContext {
             addAnyResourcesNotAlreadyPresentToBundle(results, partialBundle, resourcesAlreadyAdded);
         }
 
-        List<MedicationStatement> resultsList = new ArrayList<MedicationStatement>();
+        List<MedicationRequest> resultsList = new ArrayList<MedicationRequest>();
         List<BundleEntryComponent> entries = results.getEntry();
         for(int i = 0; i < entries.size();i++){
             BundleEntryComponent x = entries.get(i);
             Resource y = x.getResource();
-            if(y.getClass().equals(MedicationStatement.class)) {
-                MedicationStatement medicationStatement = (MedicationStatement) y;
+            if(y.getClass().equals(MedicationRequest.class)) {
+                MedicationRequest medicationStatement = (MedicationRequest) y;
                 resultsList.add(medicationStatement);
             }
         }
