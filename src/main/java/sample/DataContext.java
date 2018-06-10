@@ -43,7 +43,7 @@ public class DataContext {
     public List<Observation> GetPatientObservations(Patient patient){
         Bundle results = client.search()
                 .forResource(Observation.class)
-                .where(Observation.PATIENT.hasId(patient.getId()))
+                .where(Observation.PATIENT.hasId(patient.getIdElement().toUnqualified().getValue()))
                 .returnBundle(Bundle.class)
                 .execute();
         List<Observation> resultsList = new ArrayList<Observation>();
@@ -60,7 +60,7 @@ public class DataContext {
 
         Bundle results = client.search()
                 .forResource(MedicationRequest.class)
-                .where(MedicationRequest.PATIENT.hasId(patient.getId()))
+                .where(MedicationRequest.PATIENT.hasId(patient.getIdElement().toUnqualified().getValue()))
                 .returnBundle(Bundle.class)
                 .execute();
 
