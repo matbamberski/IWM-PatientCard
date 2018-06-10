@@ -1,8 +1,5 @@
 package sample;
 
-import ca.uhn.fhir.model.dstu2.composite.HumanNameDt;
-import ca.uhn.fhir.model.dstu2.resource.Patient;
-import ca.uhn.fhir.model.primitive.StringDt;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -16,6 +13,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import org.hl7.fhir.dstu3.model.HumanName;
+import org.hl7.fhir.dstu3.model.Patient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,16 +46,9 @@ public class MainView extends Scene {
         String filterText = NameFilter.getText();
         List<Patient> patientList = new ArrayList<Patient>();
         for (Patient patient : allPatients) {
-            boolean isOnList = false;
-            for (HumanNameDt name : patient.getName()) {
-                for (StringDt family : name.getFamily()) {
-                    if(family.toString().toLowerCase().contains(filterText.toLowerCase())){
-                        patientList.add(patient);
-                        isOnList = true;
-                        break;
-                    }
-                }
-                if(isOnList){
+            for (HumanName name : patient.getName()) {
+                if(name.getFamily().toLowerCase().contains(filterText.toLowerCase())){
+                    patientList.add(patient);
                     break;
                 }
             }
@@ -70,10 +62,8 @@ public class MainView extends Scene {
         for (Patient patient : patientList) {
             if(!patient.getName().isEmpty()) {
                 String name = "";
-                if( patient.getName().get(0) != null &&
-                        !patient.getName().get(0).getFamily().isEmpty() &&
-                        patient.getName().get(0).getFamily().get(0) != null) {
-                    name += patient.getName().get(0).getFamily().get(0).toString();
+                if( patient.getName().get(0) != null) {
+                    name += patient.getName().get(0).getFamily();
                 }
                 if( patient.getName().get(0) != null &&
                         !patient.getName().get(0).getGiven().isEmpty() &&

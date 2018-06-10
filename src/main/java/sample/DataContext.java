@@ -1,11 +1,10 @@
 package sample;
 
 import ca.uhn.fhir.context.FhirContext;
-import ca.uhn.fhir.model.api.IResource;
-import ca.uhn.fhir.model.dstu2.resource.*;
-import ca.uhn.fhir.model.dstu2.resource.Bundle.Entry;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import ca.uhn.fhir.rest.client.api.ServerValidationModeEnum;
+import org.hl7.fhir.dstu3.model.*;
+import org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.instance.model.api.IBaseBundle;
 
 import java.util.ArrayList;
@@ -18,21 +17,22 @@ public class DataContext {
     private FhirContext fhirContext;
     private IGenericClient client;
 
-    public DataContext(){
-        fhirContext = FhirContext.forDstu2();
+    DataContext(){
+        fhirContext = FhirContext.forDstu3();
         fhirContext.getRestfulClientFactory().setServerValidationMode(ServerValidationModeEnum.NEVER);
-        String serverBase = "http://fhirtest.uhn.ca/baseDstu2";
+//        String serverBase = "http://fhirtest.uhn.ca/baseDstu2";
+        String serverBase = "http://localhost:8080/baseDstu3";
         client = fhirContext.newRestfulGenericClient(serverBase);
     }
 
     private void addInitialUrlsToSet(Bundle theBundle, Set<String> theResourcesAlreadyAdded) {
-        for (Bundle.Entry entry : theBundle.getEntry()) {
+        for (BundleEntryComponent entry : theBundle.getEntry()) {
             theResourcesAlreadyAdded.add(entry.getFullUrl());
         }
     }
 
     private void addAnyResourcesNotAlreadyPresentToBundle(Bundle theAggregatedBundle, Bundle thePartialBundle, Set<String> theResourcesAlreadyAdded) {
-        for (Bundle.Entry entry : thePartialBundle.getEntry()) {
+        for (BundleEntryComponent entry : thePartialBundle.getEntry()) {
             if (!theResourcesAlreadyAdded.contains(entry.getFullUrl())) {
                 theResourcesAlreadyAdded.add(entry.getFullUrl());
                 theAggregatedBundle.getEntry().add(entry);
@@ -47,11 +47,9 @@ public class DataContext {
                 .returnBundle(Bundle.class)
                 .execute();
         List<Observation> resultsList = new ArrayList<Observation>();
-        List<Entry> entries = results.getEntry();
-        for(int i = 0; i < entries.size();i++){
-            Entry x = entries.get(i);
-            IResource y = x.getResource();
-            Observation observation = (Observation)y;
+        List<BundleEntryComponent> entries = results.getEntry();
+        for (BundleEntryComponent entryComponent : entries) {
+            Observation observation = (Observation) entryComponent.getResource();
             resultsList.add(observation);
         }
         return resultsList;
@@ -75,10 +73,10 @@ public class DataContext {
         }
 
         List<MedicationStatement> resultsList = new ArrayList<MedicationStatement>();
-        List<Entry> entries = results.getEntry();
+        List<BundleEntryComponent> entries = results.getEntry();
         for(int i = 0; i < entries.size();i++){
-            Entry x = entries.get(i);
-            IResource y = x.getResource();
+            BundleEntryComponent x = entries.get(i);
+            Resource y = x.getResource();
             if(y.getClass().equals(MedicationStatement.class)) {
                 MedicationStatement medicationStatement = (MedicationStatement) y;
                 resultsList.add(medicationStatement);
@@ -121,11 +119,9 @@ public class DataContext {
             System.out.println("Counts didn't match! Expected " + results.getTotal() + " but bundle only had " + results.getEntry().size() + " entries!");
         }
 
-        List<Entry> entries = results.getEntry();
-        for(int i = 0; i < entries.size();i++){
-            Entry x = entries.get(i);
-            IResource y = x.getResource();
-            Patient patient = (Patient)y;
+        List<BundleEntryComponent> entries = results.getEntry();
+        for (BundleEntryComponent entryComponent : entries) {
+            Patient patient = (Patient) entryComponent.getResource();
             result.add(patient);
         }
         return result;

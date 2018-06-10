@@ -1,8 +1,6 @@
 package sample;
 
-import ca.uhn.fhir.model.dstu2.resource.MedicationStatement;
-import ca.uhn.fhir.model.dstu2.resource.Observation;
-import ca.uhn.fhir.model.dstu2.resource.Patient;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -10,6 +8,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import org.hl7.fhir.dstu3.model.MedicationStatement;
+import org.hl7.fhir.dstu3.model.Observation;
+import org.hl7.fhir.dstu3.model.Patient;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -41,9 +42,8 @@ public class PatientTimeLineView extends Scene {
             BackButton = (Button) lookup("#BackButton");
 
             if( patientData.getName().get(0) != null &&
-                    !patientData.getName().get(0).getFamily().isEmpty() &&
-                    patientData.getName().get(0).getFamily().get(0) != null) {
-                LastName.setText(patientData.getName().get(0).getFamily().get(0).toString());
+                    patientData.getName().get(0).getFamily() != null) {
+                LastName.setText(patientData.getName().get(0).getFamily());
             }
 
             if( patientData.getName().get(0) != null &&
