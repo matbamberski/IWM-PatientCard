@@ -57,6 +57,7 @@ public class PatientTimeLineView extends Scene {
                 BirthDate.setText(df.format(patientData.getBirthDate()));
             }
 
+
             List<Observation> observations = Main.getInstance().getDataContext().GetPatientObservations(patientData);
             List<MedicationRequest> medicationStatements = Main.getInstance().getDataContext().GetPatientMedicationStatement(patientData);
 
