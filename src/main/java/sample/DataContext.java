@@ -14,11 +14,10 @@ import java.util.Set;
 
 public class DataContext {
 
-    private FhirContext fhirContext;
     private IGenericClient client;
 
     DataContext(){
-        fhirContext = FhirContext.forDstu3();
+        FhirContext fhirContext = FhirContext.forDstu3();
         fhirContext.getRestfulClientFactory().setServerValidationMode(ServerValidationModeEnum.NEVER);
 //        String serverBase = "http://fhirtest.uhn.ca/baseDstu2";
         String serverBase = "http://localhost:8080/baseDstu3";

@@ -16,7 +16,7 @@ public class Resource {
         Observation
     }
 
-    public Resource(Type type, String title, Date date, String description) {
+    Resource(Type type, String title, Date date, String description) {
         this.type = type;
         this.title = title;
         this.date = date;
@@ -32,7 +32,7 @@ public class Resource {
     }
 
     public String getDate() {
-        return new SimpleDateFormat("dd-MM-yyyy").format(date);
+        return new SimpleDateFormat("yyyy-MM-dd").format(date);
     }
 
     public String getTime() {

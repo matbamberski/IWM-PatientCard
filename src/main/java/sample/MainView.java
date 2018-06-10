@@ -6,11 +6,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import org.hl7.fhir.dstu3.model.HumanName;
@@ -21,11 +18,7 @@ import java.util.List;
 
 public class MainView extends Scene {
     private ListView PatientList;
-    private Button ChooseButton;
-    private Label Title;
     private TextField NameFilter;
-    private ImageView ClearFilter;
-
 
     private List<Patient> allPatients;
     private List<Patient> currentPatients;
@@ -42,7 +35,7 @@ public class MainView extends Scene {
         NameFilter.clear();
     }
 
-    public void SearchPatients(){
+    private void SearchPatients(){
         String filterText = NameFilter.getText();
         List<Patient> patientList = new ArrayList<Patient>();
         for (Patient patient : allPatients) {
@@ -57,13 +50,13 @@ public class MainView extends Scene {
         ApplyPatientsToList(patientList);
     }
 
-    public void ApplyPatientsToList(List<Patient> patientList){
+    private void ApplyPatientsToList(List<Patient> patientList){
         ObservableList<String> items = FXCollections.observableArrayList ();
         for (Patient patient : patientList) {
             if(!patient.getName().isEmpty()) {
                 String name = "";
                 if( patient.getName().get(0) != null) {
-                    name += patient.getName().get(0).getFamily();
+                    name += Utils.CutLastNumbers(patient.getName().get(0).getFamily());
                 }
                 if( patient.getName().get(0) != null &&
                         !patient.getName().get(0).getGiven().isEmpty() &&
@@ -71,7 +64,7 @@ public class MainView extends Scene {
                     if (name.length() > 0){
                         name += " ";
                     }
-                    name += patient.getName().get(0).getGiven().get(0).toString();
+                    name += Utils.CutLastNumbers(patient.getName().get(0).getGiven().get(0).toString());
                 }
                 items.add(name);
             }
@@ -80,16 +73,13 @@ public class MainView extends Scene {
         currentPatients = patientList;
     }
 
-    public MainView(int width, int height){
+    MainView(int width, int height){
         super(new Pane(), width, height);
         try {
             VBox root = FXMLLoader.load(getClass().getClassLoader().getResource("MainView.fxml"));
             setRoot(root);
             PatientList = (ListView) lookup("#PatientList");
-            ChooseButton = (Button) lookup("#ChooseButton");
-            Title = (Label) lookup("#Title");
             NameFilter = (TextField) lookup("#NameFilter");
-            ClearFilter = (ImageView) lookup("#ClearFilter");
 
             NameFilter.textProperty().addListener(new ChangeListener<String>() {
                 public void changed(ObservableValue<? extends String> observable,

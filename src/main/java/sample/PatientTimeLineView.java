@@ -12,7 +12,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import org.hl7.fhir.dstu3.model.DateTimeType;
 import org.hl7.fhir.dstu3.model.MedicationRequest;
 import org.hl7.fhir.dstu3.model.Observation;
 import org.hl7.fhir.dstu3.model.Patient;
@@ -20,8 +19,6 @@ import org.hl7.fhir.exceptions.FHIRException;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 class PatientTimeLineView extends Scene {
@@ -40,13 +37,13 @@ class PatientTimeLineView extends Scene {
 
             if( patientData.getName().get(0) != null &&
                     patientData.getName().get(0).getFamily() != null) {
-                lastName.setText(patientData.getName().get(0).getFamily());
+                lastName.setText(Utils.CutLastNumbers(patientData.getName().get(0).getFamily()));
             }
 
             if( patientData.getName().get(0) != null &&
                     !patientData.getName().get(0).getGiven().isEmpty() &&
                     patientData.getName().get(0).getGiven().get(0) != null) {
-                name.setText(patientData.getName().get(0).getGiven().get(0).toString());
+                name.setText(Utils.CutLastNumbers(patientData.getName().get(0).getGiven().get(0).toString()));
             }
 
             if(patientData.getBirthDate() != null) {
@@ -64,8 +61,23 @@ class PatientTimeLineView extends Scene {
                 try {
                     if(observation.hasValueCodeableConcept())
                         desc += observation.getValueCodeableConcept().getText();
-                    if(observation.hasValueQuantity())
-                        desc += observation.getValueQuantity().getValue().toString().substring(0, 5) + " " + observation.getValueQuantity().getUnit();
+                    if(observation.hasValueQuantity()) {
+                        String quantity;
+                        if (observation.getValueQuantity().getValue().toString().length() > 5) {
+                            quantity = observation.getValueQuantity().getValue().toString().substring(0, 5);
+                        } else {
+                            quantity = observation.getValueQuantity().getValue().toString();
+                        }
+                        desc += quantity + " " + observation.getValueQuantity().getUnit();
+                    }
+                    if(observation.hasValueSampledData())
+                        desc += observation.getValueSampledData().getData();
+                    if(observation.hasValueRatio())
+                        desc += observation.getValueRatio().getNumerator() + "/" + observation.getValueRatio().getDenominator();
+                    if(observation.hasValueRange())
+                        desc += observation.getValueRange().getLow() + " - " + observation.getValueRange().getHigh();
+                    if(observation.hasValuePeriod())
+                        desc += new SimpleDateFormat("HH:mm:ss dd-MM-yyyy").format(observation.getValuePeriod().getStart()) + " - " + new SimpleDateFormat("HH:mm:ss dd-MM-yyyy").format(observation.getValuePeriod().getEnd());
                 }
                 catch (FHIRException ignore){
 
@@ -73,8 +85,24 @@ class PatientTimeLineView extends Scene {
                 allData.add(new Resource(Resource.Type.Observation, observation.getCode().getText(), observation.getIssued(), desc));
             }
 
-            for (MedicationRequest medicationStatment:medicationStatements) {
-                allData.add(new Resource(Resource.Type.MedicationStatement, medicationStatment.getNote().toString(), medicationStatment.getAuthoredOn(), medicationStatment.getDosageInstruction().toString()));
+            for (MedicationRequest medicationStatement:medicationStatements) {
+                String title = "";
+                String desc = "";
+                try{
+                    if(medicationStatement.hasMedicationCodeableConcept())
+                        title += medicationStatement.getMedicationCodeableConcept().getText();
+                    if(medicationStatement.hasNote())
+                        desc += medicationStatement.getNote();
+                    if (medicationStatement.hasDosageInstruction())
+                        desc += medicationStatement.getDosageInstruction();
+                    if(medicationStatement.hasDispenseRequest()) {
+                        if(medicationStatement.getDispenseRequest().hasQuantity())
+                            desc += medicationStatement.getDispenseRequest().getQuantity();
+                    }
+                }catch (FHIRException ignore){
+
+                }
+                allData.add(new Resource(Resource.Type.MedicationStatement, title, medicationStatement.getAuthoredOn(), desc));
             }
 
             TableColumn<Resource, String> typeColumn = new TableColumn<Resource, String>("Typ");
@@ -88,9 +116,18 @@ class PatientTimeLineView extends Scene {
             dateColumn.setCellValueFactory(new PropertyValueFactory<Resource,String>("date"));
             descriptionColumn.setCellValueFactory(new PropertyValueFactory<Resource,String>("description"));
 
+            dateColumn.setSortType(TableColumn.SortType.DESCENDING);
+            timeColumn.setSortType(TableColumn.SortType.DESCENDING);
 
-            patientDataTable.getColumns().addAll(typeColumn, titleColumn, timeColumn, dateColumn, descriptionColumn);
+            timeColumn.setMaxWidth(60);
+            timeColumn.setMinWidth(60);
+            dateColumn.setMaxWidth(80);
+            dateColumn.setMinWidth(80);
+
+
             patientDataTable.setItems(allData);
+            patientDataTable.getColumns().addAll(typeColumn, titleColumn, descriptionColumn, timeColumn, dateColumn);
+            patientDataTable.getSortOrder().addAll(dateColumn, timeColumn);
             root.getChildren().add(patientDataTable);
             VBox.setVgrow(patientDataTable, Priority.ALWAYS);
 
