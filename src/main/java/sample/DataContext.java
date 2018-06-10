@@ -46,6 +46,16 @@ public class DataContext {
                 .where(Observation.PATIENT.hasId(patient.getIdElement().toUnqualified().getValue()))
                 .returnBundle(Bundle.class)
                 .execute();
+
+        Set<String> resourcesAlreadyAdded = new HashSet<String>();
+        addInitialUrlsToSet(results, resourcesAlreadyAdded);
+        Bundle partialBundle = results;
+
+        while (partialBundle.getLink(IBaseBundle.LINK_NEXT) != null){
+            partialBundle = client.loadPage().next(partialBundle).execute();
+            addAnyResourcesNotAlreadyPresentToBundle(results, partialBundle, resourcesAlreadyAdded);
+        }
+
         List<Observation> resultsList = new ArrayList<Observation>();
         List<BundleEntryComponent> entries = results.getEntry();
         for (BundleEntryComponent entryComponent : entries) {
@@ -74,13 +84,9 @@ public class DataContext {
 
         List<MedicationRequest> resultsList = new ArrayList<MedicationRequest>();
         List<BundleEntryComponent> entries = results.getEntry();
-        for(int i = 0; i < entries.size();i++){
-            BundleEntryComponent x = entries.get(i);
-            Resource y = x.getResource();
-            if(y.getClass().equals(MedicationRequest.class)) {
-                MedicationRequest medicationStatement = (MedicationRequest) y;
-                resultsList.add(medicationStatement);
-            }
+        for (BundleEntryComponent entryComponent : entries) {
+            MedicationRequest medicationStatement = (MedicationRequest) entryComponent.getResource();
+            resultsList.add(medicationStatement);
         }
         return resultsList;
     }
