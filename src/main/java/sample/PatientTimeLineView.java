@@ -23,6 +23,8 @@ import java.util.List;
 
 class PatientTimeLineView extends Scene {
 
+    private List<Observation> observations;
+
     PatientTimeLineView(int width, int height, Patient patientData){
         super(new Pane(), width, height);
         try {
@@ -51,7 +53,7 @@ class PatientTimeLineView extends Scene {
                 birthDate.setText(df.format(patientData.getBirthDate()));
             }
 
-            List<Observation> observations = Main.getInstance().getDataContext().GetPatientObservations(patientData);
+            observations = Main.getInstance().getDataContext().GetPatientObservations(patientData);
             List<MedicationRequest> medicationStatements = Main.getInstance().getDataContext().GetPatientMedicationStatement(patientData);
             ObservableList<Resource> allData = FXCollections.observableArrayList();
 
@@ -135,5 +137,10 @@ class PatientTimeLineView extends Scene {
         catch (java.io.IOException exception){
             System.out.println(exception.toString());
         }
+    }
+
+    public void getObservationChart(){
+        Graph graph = new Graph(600,800,observations.get(0));
+        Main.getInstance().setNewScene(graph);
     }
 }

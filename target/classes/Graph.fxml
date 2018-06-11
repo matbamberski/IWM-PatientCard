@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="sample.GraphController"
+            prefHeight="400.0" prefWidth="600.0" maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0">
+    <children>
+        <AnchorPane layoutX="416.0" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="185.0">
+            <children>
+                <VBox prefHeight="398.0" prefWidth="183.0">
+                    <children>
+                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" onAction="#changeToDay" fx:id="dayButton" text="Day"/>
+                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" onAction="#changeToWeek" fx:id="weekButton" text="Week"/>
+                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" onAction="#changeToMonth" fx:id="monthButton" text="Month"/>
+                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" onAction="#changeToYear" fx:id="yearButton" text="Year" />
+                    </children>
+                </VBox>
+            </children>
+        </AnchorPane>
+        <AnchorPane layoutX="-7.0" prefHeight="400.0" prefWidth="420.0">
+            <children>
+                <LineChart fx:id="lineChart" legendVisible="false" prefHeight="372.0" prefWidth="423.0" visible="false">
+                    <xAxis>
+                        <CategoryAxis autoRanging="false" side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis autoRanging="false" side="LEFT" />
+                    </yAxis>
+                    <cursor>
+                        <Cursor fx:constant="CROSSHAIR" />
+                    </cursor>
+                </LineChart>
+                <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" fx:id="backToPatient" onAction="#backToPatientLineView" text="Wstecz" />
+            </children>
+        </AnchorPane>
+    </children>
+</AnchorPane>
