@@ -1,43 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.chart.LineChart?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.NumberAxis?>
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="sample.GraphController"
-            prefHeight="400.0" prefWidth="600.0" maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0">
+<HBox maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.GraphController">
     <children>
-        <AnchorPane layoutX="416.0" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="185.0">
-            <children>
-                <VBox prefHeight="398.0" prefWidth="183.0">
-                    <children>
-                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" onAction="#changeToDay" fx:id="dayButton" text="Day"/>
-                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" onAction="#changeToWeek" fx:id="weekButton" text="Week"/>
-                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" onAction="#changeToMonth" fx:id="monthButton" text="Month"/>
-                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" onAction="#changeToYear" fx:id="yearButton" text="Year" />
-                    </children>
-                </VBox>
-            </children>
-        </AnchorPane>
-        <AnchorPane layoutX="-7.0" prefHeight="400.0" prefWidth="420.0">
-            <children>
-                <LineChart fx:id="lineChart" legendVisible="false" prefHeight="372.0" prefWidth="423.0" visible="false">
-                    <xAxis>
-                        <CategoryAxis autoRanging="false" side="BOTTOM" />
-                    </xAxis>
-                    <yAxis>
-                        <NumberAxis autoRanging="false" side="LEFT" />
-                    </yAxis>
-                    <cursor>
-                        <Cursor fx:constant="CROSSHAIR" />
-                    </cursor>
-                </LineChart>
-                <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" fx:id="backToPatient" onAction="#backToPatientLineView" text="Wstecz" />
-            </children>
-        </AnchorPane>
+          <VBox>
+              <children>
+            <ChoiceBox prefWidth="150.0" id="observationChoice" />
+            <Region prefHeight="50.0" prefWidth="10.0" />
+                  <Button fx:id="dayButton" mnemonicParsing="false" onAction="#changeToDay" prefHeight="50.0" prefWidth="150.0" text="Day" />
+                  <Button fx:id="weekButton" mnemonicParsing="false" onAction="#changeToWeek" prefHeight="50.0" prefWidth="150.0" text="Week" />
+                  <Button fx:id="monthButton" mnemonicParsing="false" onAction="#changeToMonth" prefHeight="50.0" prefWidth="150.0" text="Month" />
+                  <Button fx:id="yearButton" mnemonicParsing="false" onAction="#changeToYear" prefHeight="50.0" prefWidth="150.0" text="Year" />
+            <Region prefHeight="200.0" prefWidth="10.0" />
+                <Button fx:id="backToPatient" mnemonicParsing="false" onAction="#backToPatientLineView" prefHeight="50.0" prefWidth="150.0" text="Wstecz" />
+              </children>
+          </VBox>
     </children>
-</AnchorPane>
+</HBox>

@@ -27,7 +27,7 @@ public class MainView extends Scene {
 
     public void ChoosePatient(){
         int index = PatientList.getSelectionModel().getSelectedIndex() >= 0 ? PatientList.getSelectionModel().getSelectedIndex() : 0;
-        PatientTimeLineView patientTimeLineView = new PatientTimeLineView(600,800,currentPatients.get(index));
+        PatientTimeLineView patientTimeLineView = new PatientTimeLineView(600,500,currentPatients.get(index));
         Main.getInstance().setPatient(patientTimeLineView);
         Main.getInstance().setNewScene(patientTimeLineView);
     }

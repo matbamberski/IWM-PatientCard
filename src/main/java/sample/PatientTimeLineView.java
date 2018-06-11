@@ -140,7 +140,7 @@ class PatientTimeLineView extends Scene {
     }
 
     public void getObservationChart(){
-        Graph graph = new Graph(600,800,observations.get(0));
+        Graph graph = new Graph(600,500, observations);
         Main.getInstance().setNewScene(graph);
     }
 }
