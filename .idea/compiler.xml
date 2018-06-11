@@ -20,7 +20,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="IWM-PatientCard" target="1.5" />
+      <module name="IWM-PatientCard" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>

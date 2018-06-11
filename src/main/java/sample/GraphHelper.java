@@ -2,9 +2,7 @@
 package sample;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableSet;
 import javafx.scene.chart.XYChart;
 import javafx.util.Pair;
 import org.hl7.fhir.dstu3.model.Observation;
@@ -15,6 +13,9 @@ import java.util.*;
 
 public class GraphHelper {
     private XYChart<String, Number> graph;
+    private boolean daysFilter;
+    private Date start;
+    private Date end;
 
 
     public GraphHelper(XYChart<String, Number> graph) {
@@ -70,11 +71,32 @@ public class GraphHelper {
                 return o1.getKey().compareTo(o2.getKey());
             }
         });
+        if (daysFilter)
+            return filteredDates(results);
         return results;
     }
 
-    public XYChart<String, Number> getGraph() {
-        return graph;
+    public void setFilterTrue(List<Observation> observations, String observationName, Date start, Date end){
+        this.daysFilter = true;
+        this.start = start;
+        this.end = end;
+        plotLine(observations, observationName);
+    }
+
+    public void setFilterFalse(List<Observation> observations, String observationName){
+        this.daysFilter = false;
+        plotLine(observations, observationName);
+    }
+
+    private List<Pair<Date, Number>> filteredDates(List<Pair<Date, Number>> listBeforeFilter){
+        List<Pair<Date, Number>> results = new ArrayList<Pair<Date, Number>>();
+
+        for (int i=0; i<listBeforeFilter.size(); i++){
+            if ((listBeforeFilter.get(i).getKey().before(end) && listBeforeFilter.get(i).getKey().after(start)) ||
+                    (listBeforeFilter.get(i).getKey().equals(end) || listBeforeFilter.get(i).getKey().equals(start)))
+                results.add(listBeforeFilter.get(i));
+        }
+        return results;
     }
 
     private void clear() {

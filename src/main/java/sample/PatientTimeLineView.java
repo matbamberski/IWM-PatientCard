@@ -24,6 +24,7 @@ import java.util.List;
 class PatientTimeLineView extends Scene {
 
     private List<Observation> observations;
+    private Graph graph;
 
     PatientTimeLineView(int width, int height, Patient patientData){
         super(new Pane(), width, height);
@@ -140,7 +141,11 @@ class PatientTimeLineView extends Scene {
     }
 
     public void getObservationChart(){
-        Graph graph = new Graph(600,500, observations);
+        graph = new Graph(600,500, observations);
         Main.getInstance().setNewScene(graph);
+    }
+
+    public Graph getGraph(){
+        return graph;
     }
 }
