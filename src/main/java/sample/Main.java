@@ -38,7 +38,7 @@ public class Main extends Application {
         instance = this;
         Window = primaryStage;
 
-        MainScene = new MainView(600,800);
+        MainScene = new MainView(600,500);
 //        primaryStage.setMaximized(true);
         Window.setTitle("Patient Card");
         Window.setScene(MainScene);

@@ -94,7 +94,7 @@ class PatientTimeLineView extends Scene {
                     if(medicationStatement.hasNote())
                         desc += medicationStatement.getNote();
                     if (medicationStatement.hasDosageInstruction())
-                        desc += medicationStatement.getDosageInstruction();
+                        desc += medicationStatement.getDosageInstruction().get(0).getSequence();
                     if(medicationStatement.hasDispenseRequest()) {
                         if(medicationStatement.getDispenseRequest().hasQuantity())
                             desc += medicationStatement.getDispenseRequest().getQuantity();
