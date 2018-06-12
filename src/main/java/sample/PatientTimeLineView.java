@@ -1,6 +1,8 @@
 package sample;
 
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -8,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -25,6 +28,10 @@ class PatientTimeLineView extends Scene {
 
     private List<Observation> observations;
     private Graph graph;
+    private ObservableList<Resource> allData;
+    private TableView<Resource> patientDataTable;
+    private TableColumn<Resource, String> timeColumn;
+    private TableColumn<Resource, String> dateColumn;
 
     PatientTimeLineView(int width, int height, Patient patientData){
         super(new Pane(), width, height);
@@ -35,7 +42,8 @@ class PatientTimeLineView extends Scene {
             Label name = (Label) lookup("#Name");
             Label lastName = (Label) lookup("#LastName");
             Label birthDate = (Label) lookup("#BirthDate");
-            TableView<Resource> patientDataTable = new TableView<Resource>();
+            TextField dateFilter = (TextField) lookup("#DateFilter");
+            patientDataTable = new TableView<Resource>();
             patientDataTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
             if( patientData.getName().get(0) != null &&
@@ -56,7 +64,7 @@ class PatientTimeLineView extends Scene {
 
             observations = Main.getInstance().getDataContext().GetPatientObservations(patientData);
             List<MedicationRequest> medicationStatements = Main.getInstance().getDataContext().GetPatientMedicationStatement(patientData);
-            ObservableList<Resource> allData = FXCollections.observableArrayList();
+            allData = FXCollections.observableArrayList();
 
 
             for (Observation observation:observations) {
@@ -108,10 +116,18 @@ class PatientTimeLineView extends Scene {
                 allData.add(new Resource(Resource.Type.MedicationStatement, title, medicationStatement.getAuthoredOn(), desc));
             }
 
+            dateFilter.textProperty().addListener(new ChangeListener<String>() {
+                public void changed(ObservableValue<? extends String> observable,
+                                    String oldValue, String newValue) {
+
+                    FilterResources(newValue);
+                }
+            });
+
             TableColumn<Resource, String> typeColumn = new TableColumn<Resource, String>("Typ");
             TableColumn<Resource, String> titleColumn = new TableColumn<Resource, String>("Nazwa");
-            TableColumn<Resource, String> timeColumn = new TableColumn<Resource, String>("Godzina");
-            TableColumn<Resource, String> dateColumn = new TableColumn<Resource, String>("Data");
+            timeColumn = new TableColumn<Resource, String>("Godzina");
+            dateColumn = new TableColumn<Resource, String>("Data");
             TableColumn<Resource, String> descriptionColumn = new TableColumn<Resource, String>("Opis");
             typeColumn.setCellValueFactory(new PropertyValueFactory<Resource,String>("type"));
             titleColumn.setCellValueFactory(new PropertyValueFactory<Resource,String>("title"));
@@ -138,6 +154,24 @@ class PatientTimeLineView extends Scene {
         catch (java.io.IOException exception){
             System.out.println(exception.toString());
         }
+    }
+
+    public void FilterResources(String data){
+        if(data.length() > 0) {
+            ObservableList<Resource> filterData = FXCollections.observableArrayList();
+
+            for (Resource resource : allData) {
+                if(resource.getDate().startsWith(data)){
+                    filterData.add(resource);
+                }
+            }
+
+            patientDataTable.setItems(filterData);
+        }
+        else{
+            patientDataTable.setItems(allData);
+        }
+        patientDataTable.getSortOrder().addAll(dateColumn, timeColumn);
     }
 
     public void getObservationChart(){

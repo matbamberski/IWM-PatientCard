@@ -5,5 +5,9 @@ public class PatientTimeLineViewController {
         Main.getInstance().BackToMainView();
     }
 
+    public void clearFilterClicked(){
+        Main.getInstance().getPatientTimeLineView().FilterResources("");
+    }
+
     public void chooseNewGraph() { Main.getInstance().getPatientTimeLineView().getObservationChart();}
 }
